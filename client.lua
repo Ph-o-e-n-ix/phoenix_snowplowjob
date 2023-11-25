@@ -293,7 +293,7 @@ startsnowplow = function(veh, vehcoords)
     vehicle = CreateVehicle(hash, vehcoords.x, vehcoords.y, vehcoords.z, vehcoords.w, true, true)
     SetVehicleNumberPlateText(vehicle, 'XMAS')
     --SetPedIntoVehicle(playerPed, vehicle, -1)
-    if veh == 'phoenixsnow' then
+    if veh == 'biff' then
         SetVehicleExtra(vehicle, 10, true)
         SetVehicleExtra(vehicle, 11, true)
     end
