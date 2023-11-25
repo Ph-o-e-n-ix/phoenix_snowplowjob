@@ -34,7 +34,7 @@ Config.Blip = { --https://docs.fivem.net/docs/game-references/blips/
 
 Config.StartMission = {
     {   
-    vehicle = 'salter', -- https://gta5-mods.com/vehicles/snow-plow-salter-els recommended :)
+    vehicle = 'biff', -- https://gta5-mods.com/vehicles/snow-plow-salter-els recommended :)
     startcoords = vector4(109.4040, -1088.8149, 29.3025, 349.0272), -- Coords where u can start Mission
     vehiclespawn = vector4(116.6079, -1080.1251, 29.1924, 338.1011), -- Coords where the Vehicle will Spawn/where u also can complete the Mission
     npcname = 'u_f_o_prolhost_01' -- [PEDS -> https://wiki.rage.mp/index.php?title=Peds ]
