@@ -15,9 +15,9 @@ end
 Config.UseNewESX = true -- Ignore if using QB
 
 Config.Target = { -- Enable of one of them
-    oxtarget = true, 
+    oxtarget = false, 
     qbtarget = false,
-    drawtext3d = false, 
+    drawtext3d = true, 
 }
 
 Config.Settings = { -- the driver needs to drive between this values to earn money
