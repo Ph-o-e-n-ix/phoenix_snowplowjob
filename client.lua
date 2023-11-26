@@ -17,7 +17,7 @@ elseif Config.Framework.QBCore then
 end
 
 AddEventHandler('onClientResourceStart', function(ressourceName)
-    if(GetCurrentResourceName() ~= ressourceName) then 
+    if(GetCurrentResourceName() == ressourceName) then 
         print("" ..ressourceName.." started sucessfully")
     end 
 end)
