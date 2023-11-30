@@ -66,7 +66,7 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
         if propspawned then
-            local vehcoords = GetEntityCoords(vehicle)
+            local vehcoords = GetEntityCoords(globalvehicle)
             local dst = Vdist(vehcoords, result.x, result.y, result.z)
             if dst < 30 and timer < Config.MaxTime then 
                 DrawMarker(0, result.x, result.y, result.z + 2.02, 0, 0, 0, 0, 0, 0, 1.0,1.0,1.1, 255, 255, 255, 150, 1, 0, 2, 0, 0, 0, 0)
@@ -86,11 +86,11 @@ local invehicle = false
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        if DoesEntityExist(vehicle) then 
-            if IsPedInVehicle(PlayerPedId(), vehicle, false) and not invehicle then 
+        if DoesEntityExist(globalvehicle) then 
+            if IsPedInVehicle(PlayerPedId(), globalvehicle, false) and not invehicle then 
                 invehicle = true 
                 RemoveBlip(vehicleblip)
-            elseif not IsPedInVehicle(PlayerPedId(), vehicle, false) and invehicle then 
+            elseif not IsPedInVehicle(PlayerPedId(), globalvehicle, false) and invehicle then 
                 invehicle = false 
                 ps_vehicleblip()
             end 
@@ -101,12 +101,12 @@ end)
 Citizen.CreateThread(function()
     while true do 
         Citizen.Wait(1)
-        if IsPedInVehicle(PlayerPedId(), vehicle, false) and busy and not endstep then
+        if IsPedInVehicle(PlayerPedId(), globalvehicle, false) and busy and not endstep then
             Citizen.Wait(1)
             if Config.Settings.usekmh then
-                speed = GetEntitySpeed(vehicle) * 3.6
+                speed = GetEntitySpeed(globalvehicle) * 3.6
             else
-                speed = GetEntitySpeed(vehicle)
+                speed = GetEntitySpeed(globalvehicle)
             end
             if speed > Config.Settings.minspeed then 
                 if speed < Config.Settings.maxspeed then                            
@@ -261,7 +261,7 @@ Citizen.CreateThread(function()
                 if dist < 6 then 
                     shownotify(Translation[Config.Locale]['complete_mission'])
                     if IsControlJustReleased(0, 38) then 
-                        if IsPedInVehicle(PlayerPed, vehicle, false) then
+                        if IsPedInVehicle(PlayerPed, globalvehicle, false) then
                             endjob()
                             PlaySoundFrontend(-1, "REMOTE_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS", 0)
                             TriggerServerEvent("phoenix:addmoney")
@@ -290,12 +290,12 @@ startsnowplow = function(veh, vehcoords)
     while not HasModelLoaded(hash) do 
         Citizen.Wait(50)
     end
-    vehicle = CreateVehicle(hash, vehcoords.x, vehcoords.y, vehcoords.z, vehcoords.w, true, true)
-    SetVehicleNumberPlateText(vehicle, 'XMAS')
+    globalvehicle = CreateVehicle(hash, vehcoords.x, vehcoords.y, vehcoords.z, vehcoords.w, true, false)
+    SetVehicleNumberPlateText(globalvehicle, 'SNOW')
     --SetPedIntoVehicle(playerPed, vehicle, -1)
     if veh == 'biff' then
-        SetVehicleExtra(vehicle, 10, true)
-        SetVehicleExtra(vehicle, 11, true)
+        SetVehicleExtra(globalvehicle, 10, true)
+        SetVehicleExtra(globalvehicle, 11, true)
     end
     Config.MSG(Translation[Config.Locale]['info_on_start'])
     if Config.SpawnProps then 
@@ -344,7 +344,7 @@ returntocompany = function()
 end
 
 ps_vehicleblip = function()
-    vehicleblip = AddBlipForEntity(vehicle)
+    vehicleblip = AddBlipForEntity(globalvehicle)
     SetBlipSprite(vehicleblip, 227) 
     SetBlipDisplay(vehicleblip, 4)
     SetBlipScale(vehicleblip, 0.7)
@@ -372,10 +372,10 @@ DrawTextScreen = function(text)
 end
 
 endjob = function()
-    if DoesEntityExist(vehicle) then
+    if DoesEntityExist(globalvehicle) then
         TriggerServerEvent("phoenix_snowplow:bail", 'add')
     end
-    DeleteVehicle(vehicle)
+    DeleteVehicle(globalvehicle)
     DeleteEntity(snowprop)
     RemoveBlip(returnblip)
     RemoveBlip(snowblip)
@@ -420,7 +420,6 @@ end
 
 RegisterNetEvent("phoenix_snow:notify")
 AddEventHandler("phoenix_snow:notify", function(add)
-    print("notify event CLIENT SEITIG")
     if add then
         Config.MSG(Translation[Config.Locale]['bail_added'])
     else 
